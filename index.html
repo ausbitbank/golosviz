@@ -54,13 +54,11 @@
     };return SteemWrapper;
   }(); </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <!-- <script src="/js/readtime.js"></script> -->
   <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
   <script src="https://www.golosviz.com/js/steem.min.js"></script>
-  <!-- <script src="/js/steem.min.js"></script> -->
   <link href='https://fonts.googleapis.com/css?family=Monoton|Iceland|Pacifico|Press+Start+2P|Audiowide|Vampiro+One' rel='stylesheet' type='text/css'>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-  <link href="css/steemviz.css" rel="stylesheet" type="text/css">
+  <link href="style.css" rel="stylesheet" type="text/css">
   <script type="text/javascript">
 function debounce(func, wait, immediate) {
 	var timeout;
@@ -268,7 +266,6 @@ function followthetagsclearlist() {
 function followthevoteslisthistory(){
   followthevoteshistoryhtml = ['<a href="#" onclick=\'$("#followthevoteshistorycontainer").fadeOut("fast");\'><i class="fa fa-times" title="Close" style="color:red;"> </i></a><br />'];
   $.each(followthevoteshistory, function(index, value) { followthevoteshistoryhtml.push(value+'<br />'); });
-  //followthevoteshistoryhtml.push('');
   $("#followthevoteshistorycontainer").html(followthevoteshistoryhtml.join(""));
   $("#followthevoteshistorycontainer").fadeIn("fast");
 }
