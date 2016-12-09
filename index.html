@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html> <head>
-  <title>steemviz.com : steem network realtime vizualisation</title>
-  <meta name="description" content="steemviz displays all transactions on the steem network blockchain in real time."> <meta property="og:title" content="steem network realtime vizualisation"> <meta property="og:site_name" content="steemviz.com">
-  <meta property="og:description" content="steemviz displays all transactions on the steem network blockchain in real time.">
+  <title>golosviz : golos network realtime vizualisation</title>
+  <meta name="description" content="golosviz displays all transactions on the steem network blockchain in real time."> <meta property="og:title" content="steem network realtime vizualisation"> <meta property="og:site_name" content="golosviz">
+  <meta property="og:description" content="golosviz displays all transactions on the golos network blockchain in real time.">
   <meta charset="UTF-8">
   <script type="text/javascript">
   var lastblocknum = 0;
   var lastpermlink;
-  var defaultfollowthevoters = [ "ausbitbank", "steemleak", "curie", "robinhoodwhale", "projectnewbie", "krystle", "dantheman", "ned", "steemitblog", "acidyo", "merej99", "opheliafu", "kiddarko", "complexring", "positive", "trogdoor", "applecrisp", "nextgen622", "nextgencrypto", "laonie", "blocktrades", "smooth", "teamsteem", "fyrstikken", "sykochica", "sauravrungta", "robotev", "liberosist", "nanzo-scoop", "steemstem", "voteinterestpool", "instructor2121" , "somebody", "donkeypong", "officialfuzzy", "furion", "infovore", "shadowspub", "cjclaro", "steevc", "better", "steemtrail"];
-  var defaultfollowthetags = [ "steemviz"];
+  var defaultfollowthevoters = [ "hipster", "ausbitbank", "dantheman", "ned","jesta","applecrisp","someguy123","roelandp","pfunk"];
+  var defaultfollowthetags = [ "golosviz"];
   var followthevoters = defaultfollowthevoters;
-  var followthevoteshistory = ['https://steemit.com/@ausbitbank'];
+  var followthevoteshistory = ['https://golos.io/@ausbitbank'];
   var imageproxy = '';
   var imageproxystatus = false;
   var followthetags = false;
@@ -54,12 +54,13 @@
     };return SteemWrapper;
   }(); </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html-gl/0.3.1/htmlgl.min.js"></script> -->
+  <!-- <script src="/js/readtime.js"></script> -->
   <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
-  <script src="steem.min.js"></script>
+  <script src="https://www.golosviz.com/js/steem.min.js"></script>
+  <!-- <script src="/js/steem.min.js"></script> -->
   <link href='https://fonts.googleapis.com/css?family=Monoton|Iceland|Pacifico|Press+Start+2P|Audiowide|Vampiro+One' rel='stylesheet' type='text/css'>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-  <link href="steemviz.css" rel="stylesheet" type="text/css">
+  <link href="css/steemviz.css" rel="stylesheet" type="text/css">
   <script type="text/javascript">
 function debounce(func, wait, immediate) {
 	var timeout;
@@ -79,7 +80,7 @@ function debounce(func, wait, immediate) {
 var objcontent = [];
 function addEvent(content) {
 
-  containerhead = '<div class="columnitem">';
+  containerhead = '<div class="columnitem" style="display:none;">';
   containerfoot = '</div>';
   if (content.subtitle == "") {
     containerinner = '<div class="title">'+content.title+'</div>';
@@ -171,7 +172,7 @@ function imageproxytoggle() {
   if (imageproxystatus == false) {
     $("#imageproxytoggle").removeClass("fa fa-toggle-off").addClass("fa fa-toggle-on")
     imageproxystatus = true
-    imageproxy = "https://img1.steemit.com/0x0/";
+    imageproxy = "https://img1.golos.io/0x0/";
   } else {
     $("#imageproxytoggle").removeClass("fa fa-toggle-on").addClass("fa fa-toggle-off")
     imageproxystatus = false
@@ -238,7 +239,7 @@ function followthevoteslistusers(){
 function followthetagslisttags(){
   var taglisthtml = ['<ul>'];
   $.each(defaultfollowthetags, function(index, value) {
-    taglisthtml.push('<li id="followthetags-'+value+'"><small><a href="#" onclick="followthetagsremovetag('+index+');"><i class="fa fa-times hovergrow" title="Remove tag" style="color:red;" aria-hidden="true"></i></a>  <a href="https://steemit.com/created/'+value+'"><i class="fa fa-external-link-square" aria-hidden="true"></i> '+value+'</a></small></li>');
+    taglisthtml.push('<li id="followthetags-'+value+'"><small><a href="#" onclick="followthetagsremovetag('+index+');"><i class="fa fa-times hovergrow" title="Remove tag" style="color:red;" aria-hidden="true"></i></a>  <a href="https://golos.io/'+value+'/created"><i class="fa fa-external-link-square" aria-hidden="true"></i> '+value+'</a></small></li>');
   });
   taglisthtml.push('</ul>');
   $("#followthevotesconfigscreentaglist").fadeIn("fast").html(taglisthtml.join(""));
@@ -336,7 +337,7 @@ function getVotes(voterindex){
     var votelisthtml = ['<center><h3>Last '+votehistory.length+' votes by '+voter+'  <a href="#" class="hovergrow" id="votehistoryclose" onclick=\'$("#votehistorycontainer").fadeOut("fast");\'><i class="fa fa-times" title="Close" style="color:red;"> </i></h3></a></center><br /><ul id="votelist">'];
   //  console.log(votehistory);
   $.each(votehistory.reverse(), function(index, value) {
-    votelisthtml.push('<li><small>'+votehistory[index].time+' '+votehistory[index].percent/100+'%</small> <a href="https://steemit.com/steemviz/@'+votehistory[index].authorperm+'" target="_blank">@'+votehistory[index].authorperm.substring(0,40)+'</a></li>');
+    votelisthtml.push('<li><small>'+votehistory[index].time+' '+votehistory[index].percent/100+'%</small> <a href="https://golos.io/golosviz/@'+votehistory[index].authorperm+'" target="_blank">@'+votehistory[index].authorperm.substring(0,40)+'</a></li>');
   });
   votelisthtml.push('</ul>');
   $("#votehistoryholder").html(votelisthtml.join(""));
@@ -393,17 +394,16 @@ var limitorderlastprice = "0.5";
 	$( document ).ready(function() {
       $('#column1').prepend('<div class="columnheader" style="display:none;"><div class="title"><i class="fa fa-newspaper-o" style="color:purple;" aria-hidden="true"></i> <i class="fa fa-star" style="color:gold;" aria-hidden="true"></i></div></div>');
       $("#column1").find("div.columnheader:first").fadeIn("slow");
-      $('#column2').prepend('<div class="columnheader" style="display:none;"><i class="fa fa-chevron-circle-up" style="color:#4ba2f2" aria-hidden="true"></i> </i> <i class="fa fa-chevron-circle-up" style="color:grey;" aria-hidden="true"></i> <i class="fa fa-flag" style="color:red" aria-hidden="true"> <i class="fa fa-low-vision" style="color:red;" aria-hidden="true"></i> <img src="follow.png" style="vertical-align:middle;"><img src="unfollow.png" style="vertical-align:middle;"> </div></div>');
+      $('#column2').prepend('<div class="columnheader" style="display:none;"><i class="fa fa-chevron-circle-up" style="color:#4ba2f2" aria-hidden="true"></i> </i> <i class="fa fa-chevron-circle-up" style="color:grey;" aria-hidden="true"></i> <i class="fa fa-flag" style="color:red" aria-hidden="true"> <i class="fa fa-low-vision" style="color:red;" aria-hidden="true"></i> <img src="https://www.steemimg.com/images/2016/09/21/follow13310.png" style="vertical-align:middle;"><img src="https://www.steemimg.com/images/2016/09/21/unfollowa5d1c.png" style="vertical-align:middle;"> </div></div>');
       $("#column2").find("div.columnheader:first").fadeIn("slow");
       $('#column3').prepend('<div class="columnitem" style="display:none;"><div class="title"><div class="title"><i class="fa fa-check" style="color:green;"> </i> <i class="fa fa-times" style="color:red;"> </i> <i class="fa fa-commenting-o" style="color:grey;" aria-hidden="true"></i> <i class="fa fa-pencil-square-o" style="color:orange;" aria-hidden="true"></i> <i class="fa fa-ban" style="color:red" aria-hidden="true"></i> <span style="vertical-align:middle; display: inline-block; width: 1.12rem; height: 1.12rem;" class="Icon reblog"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><path d="M448,192l-128,96v-64H128v128h248c4.4,0,8,3.6,8,8v48c0,4.4-3.6,8-8,8H72c-4.4,0-8-3.6-8-8V168c0-4.4,3.6-8,8-8h248V96 L448,192z" class="reblog"></path></svg></span></div></div>');
       $("#column3").find("div.columnitem:first").fadeIn("slow");
-      $('#column4').prepend('<div class="columnitem" style="display:none;"><div class="title"><img src="mushroom.png" alt="" style="margin-bottom:-2px; vertical-align="bottom"> <i class="fa fa-cube" aria-hidden="true" style="color:brown;"></i> <i class="fa fa-key" style="color:red" aria-hidden="true"></i> <i class="fa fa-user-plus" style="color:blue" aria-hidden="true"></i> <i class="fa fa-balance-scale" style="color:purple" aria-hidden="true" alt="Market Trades"></i> <i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" alt="Transaction/Transfer"></i> <i class="fa fa-line-chart" style="color:brown;" aria-hidden="true"></i> <i class="fa fa-recycle" style="color:orange;" aria-hidden="true"></i> <i class="fa fa-eject" style="color:red;"> <i class="fa fa-university" style="color:black;" aria-hidden="true"></i> </i></div></div>');
+      $('#column4').prepend('<div class="columnitem" style="display:none;"><div class="title"><img src="https://www.steemimg.com/images/2016/09/03/mushroom185f8.png" alt="" style="margin-bottom:-2px; vertical-align="bottom"> <i class="fa fa-cube" aria-hidden="true" style="color:brown;"></i> <i class="fa fa-key" style="color:red" aria-hidden="true"></i> <i class="fa fa-user-plus" style="color:blue" aria-hidden="true"></i> <i class="fa fa-balance-scale" style="color:purple" aria-hidden="true" alt="Market Trades"></i> <i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" alt="Transaction/Transfer"></i> <i class="fa fa-line-chart" style="color:brown;" aria-hidden="true"></i> <i class="fa fa-recycle" style="color:orange;" aria-hidden="true"></i> <i class="fa fa-eject" style="color:red;"> <i class="fa fa-university" style="color:black;" aria-hidden="true"></i> </i></div></div>');
       $("#column4").find("div.columnitem:first").fadeIn("slow");
       getAccountCount();
-      //$("#outerContainer").htmlgl()
 
 if (window.WebSocket){
- var server = 'wss://node.steem.ws';
+ var server = 'ws://golos.steem.ws';
  var ws = new WebSocketWrapper(server);
  ws.connect().then(function(response) {
    var steem = new SteemWrapper(ws);
@@ -440,7 +440,7 @@ if (window.WebSocket){
                   var voteDirection = '<i class="fa fa-flag" style="color:red" aria-hidden="true"></i> <small style="color:red !important;">'+votepercent+'%</small>';
                 }
                   // Only show the permlink if its different to the last vote
-                  tmptitle = '<small><a href="http://steemit.com/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank">'+actionobj[1].voter+' '+voteDirection+'  '+actionobj[1].author+'</small>';
+                  tmptitle = '<small><a href="http://golos.io/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank">'+actionobj[1].voter+' '+voteDirection+'  '+actionobj[1].author+'</small>';
                   if (actionobj[1].permlink != lastpermlink) {
                   topost = { title: tmptitle, subtitle: '<span style="color:grey !important;">'+actionobj[1].permlink.substring(0,50)+' ..</span></a>', posttype: 'vote' }
                   } else {
@@ -456,8 +456,8 @@ if (window.WebSocket){
                       if (votepercent >= 2) {
                         //console.log("vote is greater then 2%");
                         // Only trigger on positive votes over 2% - allowing "symbolic" votes without spamming everyone
-                        var refurl = 'https://steemit.com/steemviz-'+actionobj[1].voter+'/@'+actionobj[1].author+'/'+actionobj[1].permlink;
-                        var uniqueurl = 'https://steemit.com/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink;
+                        var refurl = 'https://golos.io/golosviz-'+actionobj[1].voter+'/@'+actionobj[1].author+'/'+actionobj[1].permlink;
+                        var uniqueurl = 'https://golos.io/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink;
                         if ($.inArray(uniqueurl, followthevoteshistory) == -1) {
                           //console.log(uniqueurl+" not in follow history");
                           // If a permlink has @user/re-  its a comment
@@ -481,14 +481,14 @@ if (window.WebSocket){
                 if (actionobj[1].json_metadata != "") {
                   postjson = JSON.parse(actionobj[1].json_metadata);
                   if (postjson.hasOwnProperty("tags")) {
-                    tagstring = '<small><a href="https://steemit.com/created/'+stripHTML(postjson.tags[0])+'" target="_blank"><i class="fa fa-tags" aria-hidden="true" style="color:brown;"></i> '+stripHTML(postjson.tags[0])+'</a> ..</small>';
+                    tagstring = '<small><a href="https://golos.io/created/'+stripHTML(postjson.tags[0])+'" target="_blank"><i class="fa fa-tags" aria-hidden="true" style="color:brown;"></i> '+stripHTML(postjson.tags[0])+'</a> ..</small>';
                     postcontentshort = postcontentshort+'<br>'+tagstring;
                     // Insert code to follow tags here
                     if (followthetags == true) {
                       $.each(postjson.tags, function( index, value ){
                         if ($.inArray(value, defaultfollowthetags) !== -1) {
                           if (actionobj[1].title != '') {
-                            popurl = "https://steemit.com/steemviz-tag-"+value+"/@"+actionobj[1].author+"/"+actionobj[1].permlink;
+                            popurl = "https://golos.io/golosviz-tag-"+value+"/@"+actionobj[1].author+"/"+actionobj[1].permlink;
                             console.log("followed tag "+value)
                             followvotepoptab(popurl);
                             return false;
@@ -500,7 +500,7 @@ if (window.WebSocket){
                   }
                   if (postjson.hasOwnProperty("links")) {
                     postlink = '<small><a href="'+postjson.links[0]+'" target="_blank"><i class="fa fa-link" aria-hidden="true" style="color:grey;"></i> '+stripHTML(postjson.links[0].substring(8,30))+'</a> ..</small>';
-                    //postimage = '<a href="https://steemit.com/'+actionobj[1].parent_permlink+'/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank"><img src="'+backgroundimage+'" class="postimage"></a>'
+                    //postimage = '<a href="https://golos.io/'+actionobj[1].parent_permlink+'/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank"><img src="'+backgroundimage+'" class="postimage"></a>'
                     postcontentshort = postcontentshort+' '+postlink;
                   }
                   if (postjson.hasOwnProperty("image") && showimages == true) {
@@ -509,7 +509,7 @@ if (window.WebSocket){
                     } else {
                       backgroundimage = imageproxy+postjson.image[0];
                     }
-                    postimage = '<a href="https://steemit.com/'+actionobj[1].parent_permlink+'/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank"><img src="'+backgroundimage+'" class="postimage"></a>'
+                    postimage = '<a href="https://golos.io/'+actionobj[1].parent_permlink+'/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank"><img src="'+backgroundimage+'" class="postimage"></a>'
                     postimagelink = '  <small><a href="'+stripHTML(postjson.image[0])+'" target="_blank"><i class="fa fa-camera" style="color:black;"> </i> '+stripHTML(postjson.image[0].substring(8,30))+'</a> ..</small>';
                     postcontentshort = postimage+postcontentshort+postimagelink;
                   }
@@ -517,15 +517,15 @@ if (window.WebSocket){
 
                 if(actionobj[1].title == '') {
                   posttype = 'comment';
-                  title = '<a href="http://steemit.com/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank" class="user">'+actionobj[1].author+' <i class="fa fa-commenting-o" style="color:grey;" aria-hidden="true"></i> '+actionobj[1].parent_author+'</a>';
-                  subtitle = '<small>on <a href="https://steemit.com/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank" class="user">'+actionobj[1].permlink.substring(0,70)+'</a></small><br />'+postcontentshort+'';
+                  title = '<a href="http://golos.io/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank" class="user">'+actionobj[1].author+' <i class="fa fa-commenting-o" style="color:grey;" aria-hidden="true"></i> '+actionobj[1].parent_author+'</a>';
+                  subtitle = '<small>on <a href="https://golos.io/tag/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank" class="user">'+actionobj[1].permlink.substring(0,70)+'</a></small><br />'+postcontentshort+'';
                   //checknotify(actionobj[1].parent_author,'comment');
                 }
 
                 if (actionobj[1].title != '') {
                   posttype = 'post';
-                  title = '<i class="fa fa-newspaper-o" style="color:purple;" aria-hidden="true"></i> <a href="http://steemit.com/@'+actionobj[1].author+'" target="_blank" class="user">'+actionobj[1].author+'</a>';
-                  subtitle = '<a href="http://steemit.com/'+actionobj[1].parent_permlink+'/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank">'+stripHTML(actionobj[1].title)+'</a><br /><blockquote>'+postcontentshort+'</blockquote>';
+                  title = '<i class="fa fa-newspaper-o" style="color:purple;" aria-hidden="true"></i> <a href="http://golos.io/@'+actionobj[1].author+'" target="_blank" class="user">'+actionobj[1].author+'</a>';
+                  subtitle = '<a href="http://golos.io/'+actionobj[1].parent_permlink+'/@'+actionobj[1].author+'/'+actionobj[1].permlink+'" target="_blank">'+stripHTML(actionobj[1].title)+'</a><br /><blockquote>'+postcontentshort+'</blockquote>';
                 }
 
                 if (postcontentfull.substring(0,2) == "@@") {
@@ -540,17 +540,17 @@ if (window.WebSocket){
                             // Paid Promotion - Next check if its self promotion or gift promotion
                             if (actionobj[1].to == 'null') {
                               topost = {
-                                title : '<strong style="color:gold;"><i class="fa fa-star" aria-hidden="true"></i> Paid Promotion</strong> <small>'+actionobj[1].amount+' by</small> <a href="https://steemit.com/@'+actionobj[1].from+'" target="_blank">'+actionobj[1].from+'</a>',
-                                subtitle : '<a href="https://steemit.com/undefined/'+actionobj[1].memo+'" target="_blank">'+stripHTML(actionobj[1].memo)+'</a>',
+                                title : '<strong style="color:gold;"><i class="fa fa-star" aria-hidden="true"></i> Paid Promotion</strong> <small>'+actionobj[1].amount+' by</small> <a href="https://golos.io/@'+actionobj[1].from+'" target="_blank">'+actionobj[1].from+'</a>',
+                                subtitle : '<a href="https://golos.io/undefined/'+actionobj[1].memo+'" target="_blank">'+stripHTML(actionobj[1].memo)+'</a>',
                                 posttype : 'promoted'
                                 }
-                              } else if (actionobj[1].from == 'ausbitbank' && actionobj[1].to == 'ausbitbank' && actionobj[1].memo == 'steemviz refresh') {
+                              } else if (actionobj[1].from == 'ausbitbank' && actionobj[1].to == 'ausbitbank' && actionobj[1].memo == 'golosviz refresh') {
                                   // Remote refresh - will be used sparingly to force users to refresh for updates
                                      location.reload();
                               } else {
                                 // Add transfer parsing for: poloniex, bittrex, shapeshiftio, steembingo, steemlotto, radiosteem
                                 topost = {
-                                title : '<i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" alt="Market Trades"></i> <small>'+actionobj[1].amount+'</small> from <a href="http://steemit.com/@'+actionobj[1].from+'" target="_blank" class="user">'+actionobj[1].from+'</a> to <a href="http://steemit.com/@'+actionobj[1].to+'" target="_blank" class="user">'+actionobj[1].to+'</a>',
+                                title : '<i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" alt="Market Trades"></i> <small>'+actionobj[1].amount+'</small> from <a href="http://golos.io/@'+actionobj[1].from+'" target="_blank" class="user">'+actionobj[1].from+'</a> to <a href="http://golos.io/@'+actionobj[1].to+'" target="_blank" class="user">'+actionobj[1].to+'</a>',
                                 subtitle : '<blockquote>'+stripHTML(actionobj[1].memo)+'</blockquote>',
                                 posttype : 'transfer'
                                 }
@@ -565,7 +565,7 @@ if (window.WebSocket){
 
               case 'account_create':
                             topost = {
-                              title: '<i class="fa fa-user-plus" style="color:blue" aria-hidden="true"></i> <a href="http://steemit.com/@'+actionobj[1].new_account_name+'" target="_blank" class="user">'+actionobj[1].new_account_name+'</a>',
+                              title: '<i class="fa fa-user-plus" style="color:blue" aria-hidden="true"></i> <a href="http://golos.io/@'+actionobj[1].new_account_name+'" target="_blank" class="user">'+actionobj[1].new_account_name+'</a>',
                               subtitle: '',
                               posttype: 'account'
                             }
@@ -599,7 +599,7 @@ if (window.WebSocket){
                             }
 
                             //console.log('last price '+limitorderlastprice+' now price '+limitorderprice+' ');
-                            limitorderstring = '<a href="https://steemit.com/@'+limitorderowner+'">'+limitorderowner+'</a> offers '+limitordersellamount+' '+limitorderselltype+' at $<span style="color:'+limitordercolor+';">'+limitorderprice.toFixed(8)+'</span>';
+                            limitorderstring = '<a href="https://golos.io/@'+limitorderowner+'">'+limitorderowner+'</a> offers '+limitordersellamount+' '+limitorderselltype+' at $<span style="color:'+limitordercolor+';">'+limitorderprice.toFixed(8)+'</span>';
                             //console.log(actionobj);
 
                             topost = {
@@ -625,7 +625,7 @@ if (window.WebSocket){
               case 'limit_order_cancel':
 
                             topost = {
-                              title: '<i class="fa fa-ban" style="color:red;" aria-hidden="true"></i> <a href="http://steemit.com/@'+actionobj[1].owner+'" target="_blank" class="user">'+actionobj[1].owner+'</a> <small>cancelled '+actionobj[1].orderid+'</small> ',
+                              title: '<i class="fa fa-ban" style="color:red;" aria-hidden="true"></i> <a href="http://golos.io/@'+actionobj[1].owner+'" target="_blank" class="user">'+actionobj[1].owner+'</a> <small>cancelled '+actionobj[1].orderid+'</small> ',
                               subtitle: '',
                               posttype: 'canceltrade',
                               cancelorderid: actionobj[1].orderid
@@ -635,7 +635,7 @@ if (window.WebSocket){
 
               case 'pow':
                             topost = {
-                              title: '<i class="fa fa-cube" aria-hidden="true"></i> <a href="http://steemit.com/@'+actionobj[1].worker_account+'" target="_blank" class="user">'+actionobj[1].worker_account+'</a>',
+                              title: '<i class="fa fa-cube" aria-hidden="true"></i> <a href="http://golos.io/@'+actionobj[1].worker_account+'" target="_blank" class="user">'+actionobj[1].worker_account+'</a>',
                               subtitle: '',
                               posttype: 'market'
                             }
@@ -649,7 +649,7 @@ if (window.WebSocket){
                             //console.log(actionobj[1].work[1].input['worker_account']);
                             sbdinterest = actionobj[1].props['sbd_interest_rate'] / 100;
                             topost = {
-                              title: '<i class="fa fa-cube" aria-hidden="true" style="color:brown;"> </i> <a href="http://steemit.com/@'+actionobj[1].work[1].input['worker_account']+'" target="_blank" class="user">'+actionobj[1].work[1].input['worker_account']+'</a>',
+                              title: '<i class="fa fa-cube" aria-hidden="true" style="color:brown;"> </i> <a href="http://golos.io/@'+actionobj[1].work[1].input['worker_account']+'" target="_blank" class="user">'+actionobj[1].work[1].input['worker_account']+'</a>',
                               subtitle: ''+actionobj[1].props['account_creation_fee']+' acct fee , max blocksize '+actionobj[1].props['maximum_block_size']+' & '+sbdinterest+' % SBD interest',
                               posttype: 'market'
                             }
@@ -664,7 +664,7 @@ if (window.WebSocket){
                               voteDirection = '<i class="fa fa-times" style="color:red;"> </i>';
                             }
                             topost = {
-                              title: '<a href="https://steemit.com/@'+actionobj[1].account+'" target="_blank">'+actionobj[1].account+'</a> '+voteDirection+' <a href="https://steemit.com/@'+actionobj[1].witness+'" target="_blank">'+actionobj[1].witness+'</a>',
+                              title: '<a href="https://golos.io/@'+actionobj[1].account+'" target="_blank">'+actionobj[1].account+'</a> '+voteDirection+' <a href="https://golos.io/@'+actionobj[1].witness+'" target="_blank">'+actionobj[1].witness+'</a>',
                               subtitle: '',
                               posttype: 'witnessvote'
                             }
@@ -681,18 +681,18 @@ if (window.WebSocket){
                                   if (customjson[0] == "follow") {
 
                                     if (customjson[1].what == '') {
-                                      topost = { title: '<a href="https://steemit.com/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <img src="unfollow.png" alt="Unfollowing" border="0" style="vertical-align:middle;"> <a href="https://steemit.com/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a>', subtitle: '', posttype: 'vote'}
+                                      topost = { title: '<a href="https://golos.io/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <img src="https://www.steemimg.com/images/2016/09/21/unfollowa5d1c.png" alt="Unfollowing" border="0" style="vertical-align:middle;"> <a href="https://golos.io/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a>', subtitle: '', posttype: 'vote'}
                                       //checknotify(actionobj[1].follower,'unfollowed');
                                     } else if (customjson[1].what == 'blog') {
-                                      topost = { title: '<a href="https://steemit.com/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <img src="follow.png" alt="Following" border="0" style="vertical-align:middle;"> <a href="https://steemit.com/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a>', subtitle: '', posttype: 'vote'}
+                                      topost = { title: '<a href="https://golos.io/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <img src="https://www.steemimg.com/images/2016/09/21/follow13310.png" alt="Following" border="0" style="vertical-align:middle;"> <a href="https://golos.io/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a>', subtitle: '', posttype: 'vote'}
                                       //checknotify(actionobj[1].follower,'followed');
                                     } else if (customjson[1].what == 'ignore') {
-                                      topost = { title: '<a href="https://steemit.com/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <i class="fa fa-low-vision" style="color:red;" aria-hidden="true"></i> <a href="https://steemit.com/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a>', subtitle: '', posttype: 'vote'}
+                                      topost = { title: '<a href="https://golos.io/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <i class="fa fa-low-vision" style="color:red;" aria-hidden="true"></i> <a href="https://golos.io/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a>', subtitle: '', posttype: 'vote'}
                                       //checknotify(actionobj[1].follower,'ignored');
                                     }
                                   }
                                   if (customjson[0] == "reblog") {
-                                    topost = { title: '<a href="https://steemit.com/@'+customjson[1].account+'/" target="_blank">'+customjson[1].account+'</a> <span style="vertical-align:middle; display: inline-block; width: 1.12rem; height: 1.12rem;" class="Icon reblog"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><path d="M448,192l-128,96v-64H128v128h248c4.4,0,8,3.6,8,8v48c0,4.4-3.6,8-8,8H72c-4.4,0-8-3.6-8-8V168c0-4.4,3.6-8,8-8h248V96 L448,192z"></path></svg></span> <a href="https://steemit.com/@'+customjson[1].author+'" target="_blank">'+customjson[1].author+'</a>', subtitle: '<a href="https://steemit.com/steemvizrebloggedby'+customjson[1].account+'/@'+customjson[1].author+'/'+customjson[1].permlink+'" target="_blank">'+customjson[1].permlink+'</a>', posttype: 'comment'}
+                                    topost = { title: '<a href="https://golos.io/@'+customjson[1].account+'/" target="_blank">'+customjson[1].account+'</a> <span style="vertical-align:middle; display: inline-block; width: 1.12rem; height: 1.12rem;" class="Icon reblog"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><path d="M448,192l-128,96v-64H128v128h248c4.4,0,8,3.6,8,8v48c0,4.4-3.6,8-8,8H72c-4.4,0-8-3.6-8-8V168c0-4.4,3.6-8,8-8h248V96 L448,192z"></path></svg></span> <a href="https://golos.io/@'+customjson[1].author+'" target="_blank">'+customjson[1].author+'</a>', subtitle: '<a href="https://golos.io/golosvizrebloggedby'+customjson[1].account+'/@'+customjson[1].author+'/'+customjson[1].permlink+'" target="_blank">'+customjson[1].permlink+'</a>', posttype: 'comment'}
                                   }
 
                               } else {
@@ -709,28 +709,28 @@ if (window.WebSocket){
                               } else {
                                 withdrawvestmessage = 'Powerdown '+actionobj[1].vesting_shares+'';
                               }
-                              topost = {title: '<i class="fa fa-eject" style="color:red;"> </i> <a href="https://steemit.com/@'+actionobj[1].account+'" target="_blank">'+actionobj[1].account+'</a> <small>'+withdrawvestmessage+'</small>', subtitle: '', posttype: 'account'}
+                              topost = {title: '<i class="fa fa-eject" style="color:red;"> </i> <a href="https://golos.io/@'+actionobj[1].account+'" target="_blank">'+actionobj[1].account+'</a> <small>'+withdrawvestmessage+'</small>', subtitle: '', posttype: 'account'}
                             break;
 
                             case 'convert':
                               //console.log('convert from SBD to steem');
                               //console.log(actionobj[1]);
-                              topost = {title: '<i class="fa fa-recycle" style="color:orange;" aria-hidden="true"></i> <a href="https://steemit.com/@'+actionobj[1].owner+'" target="_blank">'+actionobj[1].owner+'</a> <small>converted '+actionobj[1].amount+' to Steem</small>', subtitle: '', posttype: 'account'}
+                              topost = {title: '<i class="fa fa-recycle" style="color:orange;" aria-hidden="true"></i> <a href="https://golos.io/@'+actionobj[1].owner+'" target="_blank">'+actionobj[1].owner+'</a> <small>converted '+actionobj[1].amount+' to Steem</small>', subtitle: '', posttype: 'account'}
                             break;
 
                             case 'transfer_to_vesting':
                               //console.log('transfer to vesting');
                               if (actionobj[1].from == actionobj[1].to) {
-                                topost = { title: '<img src="mushroom.png" style="padding:none; margin:none; position:relative;" vertical-align="middle"> Powerup <small>'+actionobj[1].amount+' by</small> <a href="https://steemit.com/@'+actionobj[1].to+'" target="_blank">'+actionobj[1].to+'</a>', subtitle: '', posttype: 'account' }
+                                topost = { title: '<img src="https://www.steemimg.com/images/2016/09/03/mushroom185f8.png" style="padding:none; margin:none; position:relative;" vertical-align="middle"> Powerup <small>'+actionobj[1].amount+' by</small> <a href="https://golos.io/@'+actionobj[1].to+'" target="_blank">'+actionobj[1].to+'</a>', subtitle: '', posttype: 'account' }
                               } else {
-                                topost = { title: '<img src="mushroom.png" style="padding:none; margin:none; position:relative;" vertical-align="middle"> Powerup <small>'+actionobj[1].amount+' for</small> <a href="https://steemit.com/@'+actionobj[1].to+'" target="_blank">'+actionobj[1].to+'</a> by <a href="https://steemit.com/@'+actionobj[1].from+'" target="_blank">'+actionobj[1].from+'</a>', subtitle: '', posttype: 'account' }
+                                topost = { title: '<img src="https://www.steemimg.com/images/2016/09/03/mushroom185f8.png" style="padding:none; margin:none; position:relative;" vertical-align="middle"> Powerup <small>'+actionobj[1].amount+' for</small> <a href="https://golos.io/@'+actionobj[1].to+'" target="_blank">'+actionobj[1].to+'</a> by <a href="https://golos.io/@'+actionobj[1].from+'" target="_blank">'+actionobj[1].from+'</a>', subtitle: '', posttype: 'account' }
                               }
 
                               break;
 
                             case 'delete_comment':
                               //console.log('comment deleted');
-                              topost = { title: '<i class="fa fa-ban" style="color:red;" aria-hidden="true"></i> <a href="https://steemit.com/@"'+actionobj[1].author+'" target="_blank">'+actionobj[1].author+'</a> deleted ', subtitle: ' '+actionobj[1].permlink+'', posttype: 'edits' }
+                              topost = { title: '<i class="fa fa-ban" style="color:red;" aria-hidden="true"></i> <a href="https://golos.io/@"'+actionobj[1].author+'" target="_blank">'+actionobj[1].author+'</a> deleted ', subtitle: ' '+actionobj[1].permlink+'', posttype: 'edits' }
                               // author permlink
                               //console.log(actionobj[1]);
                             break;
@@ -740,7 +740,7 @@ if (window.WebSocket){
                               //console.log('price feed published');
                               //console.log(actionobj[1]);
                               topost = {
-                                title: '<i class="fa fa-line-chart" style="color:brown;" aria-hidden="true"></i> <small>"'+actionobj[1].exchange_rate.base+' per Steem" reports </small><a href="https://steemit.com/@'+actionobj[1].publisher+'" target="_blank">'+actionobj[1].publisher+'</a>',
+                                title: '<i class="fa fa-line-chart" style="color:brown;" aria-hidden="true"></i> <small>"'+actionobj[1].exchange_rate.base+' per Steem" reports </small><a href="https://golos.io/@'+actionobj[1].publisher+'" target="_blank">'+actionobj[1].publisher+'</a>',
                                 subtitle: '',
                                 posttype: 'account'
                               }
@@ -748,14 +748,14 @@ if (window.WebSocket){
 
                             case 'transfer_to_savings':
                               topost = {
-                                title: '<i class="fa fa-university" style="color:black;" aria-hidden="true"></i> <small><a href="https://steemit.com/@'+actionobj[1].to+'">'+actionobj[1].to+' deposited '+actionobj[1].amount+' in savings </small>',
+                                title: '<i class="fa fa-university" style="color:black;" aria-hidden="true"></i> <small><a href="https://golos.io/@'+actionobj[1].to+'">'+actionobj[1].to+' deposited '+actionobj[1].amount+' in savings </small>',
                                 subtitle: '',
                                 posttype: 'account'
                               }
                             break;
                             case 'transfer_from_savings':
                               topost = {
-                                title: '<i class="fa fa-university" style="color:black;" aria-hidden="true"></i> <small><a href="https://steemit.com/@'+actionobj[1].to+'">'+actionobj[1].to+' withdrew '+actionobj[1].amount+' from savings </small>',
+                                title: '<i class="fa fa-university" style="color:black;" aria-hidden="true"></i> <small><a href="https://golos.io/@'+actionobj[1].to+'">'+actionobj[1].to+' withdrew '+actionobj[1].amount+' from savings </small>',
                                 subtitle: '',
                                 posttype: 'account'
                               }
@@ -791,26 +791,24 @@ if (window.WebSocket){
         });
 </script>
  </head><body>
+
   <div id="outerContainer">
     <div id="column1"> </div> <div id="column2"> </div> <div id="column3"> </div> <div id="column4"> </div>
  </div>
 <div id="followthevotesconfigscreen">
   <div id="followthevotesconfigclose" style="display:block;position:absolute;right:5px;top:5px;"> <a href="#" onclick="followthevotesconfigclose();" style="color:green;">  <i class="fa fa-floppy-o hovergrow" aria-hidden="true"> </i></a> </div>
-  <center><img src="steemvizlogo1b6ac.png" width="250" title="SteemViz - thanks to @minion for the logo!"></center>
-  <center><strong>Realtime steem blockchain viewer and curation tool</strong></center>
-  <i class="fa fa-newspaper-o" style="color:purple;" aria-hidden="true" title="New Post"> </i> <i class="fa fa-star" style="color:gold;" title="New Promotion" aria-hidden="true"> </i> <i class="fa fa-chevron-circle-up" title="Upvote" style="color:#4ba2f2" aria-hidden="true"> </i> <i class="fa fa-chevron-circle-up" title="Unvote" style="color:grey;" aria-hidden="true"> </i> <i class="fa fa-flag" style="color:red" title="Downvote" aria-hidden="true"> </i> <i class="fa fa-low-vision" title="Mute" style="color:red;" aria-hidden="true"> </i> <img src="follow.png" title="Follow" style="vertical-align:middle;"> <img src="unfollow.png" title="Unfollow" style="vertical-align:middle;"> <i class="fa fa-check" title="Approve witness" style="color:green;"> </i> <i class="fa fa-times" title="Dissaprove witness" style="color:red;"> </i> <i class="fa fa-commenting-o" title="New comment" style="color:grey;" aria-hidden="true"> </i> <i class="fa fa-pencil-square-o" title="Edit" style="color:orange;" aria-hidden="true"> </i> <i class="fa fa-ban" title="Deletion" style="color:red" aria-hidden="true"> </i> <span style="vertical-align:middle; display: inline-block; width: 1.12rem; height: 1.12rem;" class="Icon reblog" title="Resteem" ><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><path d="M448,192l-128,96v-64H128v128h248c4.4,0,8,3.6,8,8v48c0,4.4-3.6,8-8,8H72c-4.4,0-8-3.6-8-8V168c0-4.4,3.6-8,8-8h248V96 L448,192z" class="reblog"></path></svg></span> <img src="mushroom.png" title="Powerup" style="margin-bottom:-2px; vertical-align="bottom"> <i class="fa fa-cube" aria-hidden="true" style="color:brown;" title="New block"></i> <i class="fa fa-key" title="Account update" style="color:red" aria-hidden="true"></i> <i class="fa fa-user-plus" title="New user"  style="color:blue" aria-hidden="true"></i> <i class="fa fa-balance-scale" title="Market Trade" style="color:purple" aria-hidden="true" title="Market Trades"></i> <i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" title="Transaction/Transfer"></i> <i class="fa fa-line-chart" title="Witness price feed" style="color:brown;" aria-hidden="true"> </i> <i class="fa fa-recycle" title="SBD Conversion request" style="color:orange;" aria-hidden="true"> </i> <i class="fa fa-eject" style="color:red;" title="Powerdown"> </i> <i class="fa fa-university" style="color:black;" title="Savings" aria-hidden="true"></i><br />
+  <center><strong>В реальном масштабе времени зритель Golos blockchain и курирование инструмент</strong></center>
+  <i class="fa fa-newspaper-o" style="color:purple;" aria-hidden="true" title="New Post"> </i> <i class="fa fa-star" style="color:gold;" title="New Promotion" aria-hidden="true"> </i> <i class="fa fa-chevron-circle-up" title="Upvote" style="color:#4ba2f2" aria-hidden="true"> </i> <i class="fa fa-chevron-circle-up" title="Unvote" style="color:grey;" aria-hidden="true"> </i> <i class="fa fa-flag" style="color:red" title="Downvote" aria-hidden="true"> </i> <i class="fa fa-low-vision" title="Mute" style="color:red;" aria-hidden="true"> </i> <img src="https://www.steemimg.com/images/2016/09/21/follow13310.png" title="Follow" style="vertical-align:middle;"> <img src="https://www.steemimg.com/images/2016/09/21/unfollowa5d1c.png" title="Unfollow" style="vertical-align:middle;"> <i class="fa fa-check" title="Approve witness" style="color:green;"> </i> <i class="fa fa-times" title="Dissaprove witness" style="color:red;"> </i> <i class="fa fa-commenting-o" title="New comment" style="color:grey;" aria-hidden="true"> </i> <i class="fa fa-pencil-square-o" title="Edit" style="color:orange;" aria-hidden="true"> </i> <i class="fa fa-ban" title="Deletion" style="color:red" aria-hidden="true"> </i> <span style="vertical-align:middle; display: inline-block; width: 1.12rem; height: 1.12rem;" class="Icon reblog" title="Resteem" ><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><path d="M448,192l-128,96v-64H128v128h248c4.4,0,8,3.6,8,8v48c0,4.4-3.6,8-8,8H72c-4.4,0-8-3.6-8-8V168c0-4.4,3.6-8,8-8h248V96 L448,192z" class="reblog"></path></svg></span> <img src="https://www.steemimg.com/images/2016/09/03/mushroom185f8.png" title="Powerup" style="margin-bottom:-2px; vertical-align="bottom"> <i class="fa fa-cube" aria-hidden="true" style="color:brown;" title="New block"></i> <i class="fa fa-key" title="Account update" style="color:red" aria-hidden="true"></i> <i class="fa fa-user-plus" title="New user"  style="color:blue" aria-hidden="true"></i> <i class="fa fa-balance-scale" title="Market Trade" style="color:purple" aria-hidden="true" title="Market Trades"></i> <i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" title="Transaction/Transfer"></i> <i class="fa fa-line-chart" title="Witness price feed" style="color:brown;" aria-hidden="true"> </i> <i class="fa fa-recycle" title="SBD Conversion request" style="color:orange;" aria-hidden="true"> </i> <i class="fa fa-eject" style="color:red;" title="Powerdown"> </i> <i class="fa fa-university" style="color:black;" title="Savings" aria-hidden="true"></i><br />
   <div style="float:left;text-align:left;padding:10px;">
   <center><h3>Settings</h3></center>
   <p><span onclick="showimagestoggle()"><i class="fa fa-toggle-on hovergrow" id="showimagestoggle" aria-hidden="true"> </i> Show Images <i class="fa fa-camera hovergrow" style="color:black;" aria-hidden="true"> </i></span> <a href="#" onclick="emergencypurge();" style="color:red !important;"><i class="fa fa-exclamation-triangle hovergrow" aria-hidden="true" title="Disable image display and purge current images"> </i></a></span></p>
-  <p><span onclick="imageproxytoggle();"> <i class="fa fa-toggle-off hovergrow" id="imageproxytoggle" aria-hidden="true"></i></span> Image Proxy <small style="color:green;" >New<i class="fa fa-exclamation" aria-hidden="true"></i> <a href="https://steemit.com/steemviz/@ausbitbank/steemviz-update-more-curators-less-bugs-and-a-new-image-proxy-toggle-feature" title="Like this feature ? Upvote this announcement post"><i class="fa fa-chevron-circle-up hovergrow" title="Like this feature ? Upvote this post!" style="color:grey;" aria-hidden="true"> </i></small></a></p>
-  <p><span onclick="followthevotestoggle()"> <i class="fa fa-toggle-off hovergrow" id="followthevotestoggle2" aria-hidden="true"></i></span> Follow the Votes <small style="color:green;" ><a href="https://steemit.com/steemviz/@ausbitbank/follow-the-votes-with-steemviz-no-login-required" title="Like this feature ? Upvote this announcement post"><i class="fa fa-chevron-circle-up hovergrow" title="Like this feature ? Upvote this post!" style="color:grey;" aria-hidden="true"> </i></small></a></p>
+  <p><span onclick="imageproxytoggle();"> <i class="fa fa-toggle-off hovergrow" id="imageproxytoggle" aria-hidden="true"></i></span> Image Proxy <small style="color:green;" >New<i class="fa fa-exclamation" aria-hidden="true"></i> </small></p>
+  <p><span onclick="followthevotestoggle()"> <i class="fa fa-toggle-off hovergrow" id="followthevotestoggle2" aria-hidden="true"></i></span> Follow the Votes <small style="color:green;" ></small></p>
   <p><span onclick="followthecommentvotestoggle()"><i class="fa fa-toggle-off hovergrow" id="followthecommentvotestoggle" aria-hidden="true"> </i> Follow comment votes</span></p>
   <div id="followtagscontainer">
     <span onclick="followthetagstoggle()"><i class="fa fa-toggle-off hovergrow" id="followthetagstoggle2" aria-hidden="true"> </i></span> Follow the Tags <small style="color:green;" >New<i class="fa fa-exclamation" aria-hidden="true"></i></small>  <form onsubmit="event.preventDefault();followthetagsaddtag();"><input type="text" value="add tag" id="followthetagsaddtaginput"> <a href="#" onclick="followthetagsclearlist();" style="color:red;" title="Clear list"><i class="fa fa-trash hovergrow" aria-hidden="true"> </i></a></form>
     <div id="followthevotesconfigscreentaglist"> </div>
   </div>
-  <!-- <p><a href="#" onclick="followthevoteslisthistory()">Show history of followed votes</a></p>
-  <center><form onsubmit="event.preventDefault();setuser();"><input type="text" value="your username" id="setuserinput" style="display:none;"></form></center> -->
   <center><h3>Statistics</h3></center>
   <div id="stats">
     <i class="fa fa-users" aria-hidden="true"></i> <strong>Registered accounts </strong><span id="statsAccountCount"></span><br />
@@ -838,6 +836,5 @@ if (window.WebSocket){
   <div id="votehistoryholder"></div>
 </div>
 <div id="focuscontent"></div>
- <div id="steemvizlogo"><div id="followthevotes" style="color:#228DFF;">FollowTheVotes <span onclick="followthevotesconfigopen();"><small style="color:green;" >New<i class="fa fa-exclamation" aria-hidden="true"></i></small>  <i class="fa fa-cogs hovergrow" aria-hidden="true"></i></span> <span onclick="followthevotestoggle()"><i class="fa fa-toggle-off hovergrow " id="followthevotestoggle" aria-hidden="true"></i></span></div><a href="https://steemit.com/@ausbitbank"  class="steemvizlogotext" target="_blank" id="settingstoggle" alt="Created by @ausbitbank - view my steemit profile">steemviz v2</a></div>
-
+ <div id="steemvizlogo"><div id="followthevotes" style="color:#228DFF;">FollowTheVotes <span onclick="followthevotesconfigopen();"><small style="color:green;" >New<i class="fa fa-exclamation" aria-hidden="true"></i></small>  <i class="fa fa-cogs hovergrow" aria-hidden="true"></i></span> <span onclick="followthevotestoggle()"><i class="fa fa-toggle-off hovergrow " id="followthevotestoggle" aria-hidden="true"></i></span></div><a href="https://golos.io/@ausbitbank" class="golosvizlogotext" target="_blank" id="settingstoggle" alt="Created by @ausbitbank - view my steemit profile">golosviz</a></div>
 </body></html>
