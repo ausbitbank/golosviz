@@ -298,7 +298,7 @@ function followthevotesremoveuser(index) {
 }
 
 function followthevotesrestoredefaults() {
-  followthevoters = [ "ausbitbank", "steemleak", "curie", "robinhoodwhale", "projectnewbie", "krystle", "dantheman", "ned", "steemitblog", "acidyo", "merej99", "opheliafu", "kiddarko", "complexring", "positive", "trogdoor", "applecrisp", "nextgen622", "nextgencrypto", "laonie", "blocktrades", "smooth", "teamsteem", "fyrstikken", "sykochica", "sauravrungta", "robotev", "liberosist", "nanzo-scoop", "steemstem", "voteinterestpool", "instructor2121" , "somebody", "donkeypong", "officialfuzzy", "furion", "infovore", "shadowspub", "cjclaro", "steevc", "better"];
+  followthevoters = [ "hipster", "ausbitbank", "dantheman", "ned","jesta","applecrisp","someguy123","roelandp","pfunk"];
   followthevoteslistusers();
 }
 
@@ -412,14 +412,14 @@ if (window.WebSocket){
        lastblocknum = block_number;
        //console.log(response2);
        $("#blocknumber").html("<i class='fa fa-cube'> </i> "+lastblocknum);
-       $("#currentwitness").html("<i class='fa fa-user-secret'> </i> <a href='https://steemdb.com/@"+response2['current_witness']+"'>"+response2['current_witness']+"</a>");
+       $("#currentwitness").html("<i class='fa fa-user-secret'> </i> <a href='https://golosdb.com/@"+response2['current_witness']+"'>"+response2['current_witness']+"</a>");
        $("#timestamp").html("<i class='fa fa-clock-o' aria-hidden='true'> </i>  "+response2['time']);
        if (response2["sbd_print_rate"] <= sbd_print_rate_last) {
          sbd_print_rate_color = "red";
        } else {
          sbd_print_rate_color = "green";
        }
-       supplystatshtml = "<strong>Current SBD supply</strong> "+response2["current_sbd_supply"]+" <br /> <strong>Current Steem supply</strong> "+response2["current_supply"]+" <br /><strong>Average Block size</strong> "+response2["average_block_size"]+" <br /><strong>SBD Print Rate</strong> <span color=\""+sbd_print_rate_color+"\">"+response2["sbd_print_rate"]+"</span> <br /><strong>Votes regenerated per day</strong> "+response2["vote_regeneration_per_day"]+" <br /><strong>Total reward fund steem</strong> "+response2["total_reward_fund_steem"]+" <br /><strong>Total vesting fund</strong> "+response2["total_vesting_fund_steem"]+" <br /><strong>Total vesting shares</strong> "+response2["total_vesting_shares"]+" <br /><strong>Virtual supply</strong> "+response2["virtual_supply"]+" <br/><strong>Current reserve ratio</strong> "+response2["current_reserve_ratio"];
+       supplystatshtml = "<strong>Current GBD supply</strong> "+response2["current_sbd_supply"]+" <br /> <strong>Current Golos supply</strong> "+response2["current_supply"]+" <br /><strong>Average Block size</strong> "+response2["average_block_size"]+" <br /><strong>GBD Print Rate</strong> <span color=\""+sbd_print_rate_color+"\">"+response2["sbd_print_rate"]+"</span> <br /><strong>Votes regenerated per day</strong> "+response2["vote_regeneration_per_day"]+" <br /><strong>Total reward fund steem</strong> "+response2["total_reward_fund_steem"]+" <br /><strong>Total vesting fund</strong> "+response2["total_vesting_fund_steem"]+" <br /><strong>Total vesting shares</strong> "+response2["total_vesting_shares"]+" <br /><strong>Virtual supply</strong> "+response2["virtual_supply"]+" <br/><strong>Current reserve ratio</strong> "+response2["current_reserve_ratio"];
        $("#supplystats").html(supplystatshtml);
        steem.send("get_block", [block_number], function(block) {
          for(var i = 0; i < block.transactions.length; i++) {
