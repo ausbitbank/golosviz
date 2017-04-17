@@ -380,7 +380,7 @@ function streamtx(txType,txData) {
         case 'transfer':
            if (txData.to == 'null') {
             title = '<div class="title"><strong style="color:gold;"><i class="fa fa-star" aria-hidden="true"></i> Paid Promotion</strong> <small>'+txData.amount+' by</small> <a href="https://steemit.com/@'+txData.from+'" target="_blank">'+txData.from+'</a></div>',
-            subtitle = '<div class="undertitle"><a href="https://steemit.com/undefined/'+txData.memo+'" target="_blank">'+stripHTML(txData.memo)+'</a></div>',
+            subtitle = '<div class="undertitle"><a href="https://golos.io/'+txData.memo+'" target="_blank">'+stripHTML(txData.memo)+'</a></div>',
             rendertx(title+' '+subtitle,1);
             } else {
               title = '<div class="title"><i class="fa fa-exchange" style="color:#11922c" aria-hidden="true" alt="Market Trades"></i> <small>'+txData.amount+'</small> from <a href="http://steemit.com/@'+txData.from+'" target="_blank" class="user">'+txData.from+'</a> to <a href="http://steemit.com/@'+txData.to+'" target="_blank" class="user">'+txData.to+'</a></div>',
