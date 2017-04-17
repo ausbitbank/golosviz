@@ -453,6 +453,7 @@ function streamtx(txType,txData) {
             if (txData.id == "follow") {
               customjson = JSON.parse(txData.json);
               if (customjson[0] == "follow") {
+                if (bmtoggle==false){if(customjson[1].follower.startsWith("bm-")||customjson[1].following.startsWith("bm-")){break;}}
                 if (customjson[1].what == '') {
                   rendertx('<div class="title"><a href="https://golos.io/@'+customjson[1].follower+'/" target="_blank">'+customjson[1].follower+'</a> <img src="unfollow.png" alt="Unfollowing" border="0" style="vertical-align:middle;"> <a href="https://golos.io/@'+customjson[1].following+'" target="_blank">'+customjson[1].following+'</a></div>',2);
                 } else if (customjson[1].what == 'blog') {
