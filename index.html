@@ -400,7 +400,7 @@ var limitorderlastprice = "0.5";
       getAccountCount();
 
 if (window.WebSocket){
- var server = 'ws://golos.steem.ws';
+ var server = 'ws://ws.golos.io';
  var ws = new WebSocketWrapper(server);
  ws.connect().then(function(response) {
    var steem = new SteemWrapper(ws);
